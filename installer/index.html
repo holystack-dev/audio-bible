@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Audio Bible — Firmware Installer</title>
+  <meta name="description" content="One-click firmware installer for the round ESP32-S3 Audio Bible player." />
+  <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js"></script>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at 50% 30%, #1c2230, #0d1016 70%);
+      color: #e8ecf2; text-align: center; padding: 32px 20px;
+    }
+    .card {
+      max-width: 480px; width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px; padding: 36px 28px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+    .badge {
+      width: 84px; height: 84px; border-radius: 50%;
+      background: linear-gradient(145deg, #3b82f6, #6366f1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px; margin: 0 auto 18px;
+    }
+    h1 { font-size: 24px; margin: 0 0 6px; }
+    .sub { color: #9aa6b8; font-size: 15px; margin: 0 0 28px; }
+    esp-web-install-button { --esp-tools-button-color: #fff; }
+    .install-btn {
+      appearance: none; border: 0; cursor: pointer;
+      background: linear-gradient(145deg, #3b82f6, #6366f1);
+      color: #fff; font-size: 17px; font-weight: 600;
+      padding: 14px 32px; border-radius: 14px;
+    }
+    ol { text-align: left; color: #c4cdda; font-size: 14px; line-height: 1.7; margin: 28px 0 0; padding-left: 22px; }
+    .note { margin-top: 22px; font-size: 13px; color: #8893a5; line-height: 1.6; }
+    .unsupported { display: none; color: #f2b8b8; background: rgba(180,40,40,0.15);
+      border: 1px solid rgba(180,40,40,0.4); border-radius: 12px; padding: 14px; margin-top: 22px; font-size: 14px; }
+    a { color: #7aa7ff; }
+    code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 6px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">📖</div>
+    <h1>Audio Bible Installer</h1>
+    <p class="sub">Install firmware on your round ESP32-S3 player — right from this page, nothing to download.</p>
+
+    <esp-web-install-button manifest="./manifest.json">
+      <button class="install-btn" slot="activate">Connect &amp; Install</button>
+      <span slot="unsupported"></span>
+      <span slot="not-allowed"></span>
+    </esp-web-install-button>
+
+    <div class="unsupported" id="unsupported">
+      Your browser can't talk to USB devices. Please use <strong>Chrome</strong> or
+      <strong>Edge</strong> on a computer (Windows, Mac, Linux, or Chromebook).
+      iPhones and iPads can't flash USB devices.
+    </div>
+
+    <ol>
+      <li>Plug the device into this computer with a <strong>USB-C</strong> cable.</li>
+      <li>Click <strong>Connect &amp; Install</strong> above.</li>
+      <li>Pick the device's serial port when asked, then choose <strong>Install</strong>.</li>
+      <li>Wait until it finishes, then unplug. That's it.</li>
+    </ol>
+
+    <p class="note">
+      Can't connect? Put the board in download mode: hold <strong>BOOT</strong>, tap
+      <strong>RESET</strong>, release <strong>BOOT</strong>, then try again.<br />
+      Source &amp; build-your-own guide:
+      <a href="https://github.com/holystack-dev/shema">GitHub repo</a>.
+    </p>
+  </div>
+
+  <script>
+    // esp-web-tools fires a non-supported state on browsers without Web Serial.
+    if (!("serial" in navigator)) {
+      document.getElementById("unsupported").style.display = "block";
+    }
+  </script>
+</body>
+</html>
